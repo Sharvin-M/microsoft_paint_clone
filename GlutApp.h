@@ -80,8 +80,8 @@ struct GlutApp{
     }
 
     GlutApp(int argc,char** argv){
-        height = 400;
-        width = 400;
+        width = 1280;
+        height = 720;
         title = "GLUT App";
 
         glutInit(&argc, argv);

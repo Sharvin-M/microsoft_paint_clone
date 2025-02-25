@@ -197,10 +197,10 @@ public:
 
     // }
     else if (selectedTool == MOUSE && selectedShape != -1) {
-      // if (selectedShape != -1) {
+      if (selectedShape != -1) {
       shapes[selectedShape]->setX(x - offsetX);
       shapes[selectedShape]->setY(y - offsetY);
-      // }
+      }
     } else if (selectedTool == ERASER) {
       eraseShape(x, y);
     }
