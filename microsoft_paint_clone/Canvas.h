@@ -6,8 +6,10 @@
 #include "Octagon.h"
 #include "Rectangle.h"
 #include "Scribble.h"
+#include "Shape.h"
 #include "Square.h"
 #include "Toolbar.h"
+#include <memory>
 
 struct Canvas {
 private:
@@ -103,9 +105,9 @@ public:
 
   void handleMouseClick(float x, float y, Tool selectedTool, Color color) {
     if (selectedTool == PENCIL) {
-      // shapes[shapeCounter] = new Scribble();
-      // shapeCounter++;
-      // ((Scribble*)shapes[shapeCounter-1])->addPoint(x, y, color);
+      shapes[shapeCounter] = new Scribble();
+      shapeCounter++;
+      ((Scribble *)shapes[shapeCounter - 1])->addPoint(x, y, color);
       Scribble *newScribble = new Scribble();
       newScribble->addPoint(x, y, color);
       shapes[shapeCounter++] = newScribble;
@@ -115,9 +117,9 @@ public:
         selectedShape = -1;
       }
     } else if (selectedTool == ERASER) {
-      // shapes[shapeCounter] = new Scribble();
-      // shapeCounter++;
-      // ((Scribble*)shapes[shapeCounter-1])->addPoint(x, y, Color(1, 1, 1));
+      shapes[shapeCounter] = new Scribble();
+      shapeCounter++;
+      ((Scribble *)shapes[shapeCounter - 1])->addPoint(x, y, Color(1, 1, 1));
       eraseShape(x, y);
 
       if (selectedShape != -1) {
@@ -184,22 +186,16 @@ public:
 
   void handleMouseDrag(float x, float y, Tool selectedTool, Color color) {
     if (selectedTool == PENCIL && shapeCounter > 0) {
-      // ((Scribble*)shapes[shapeCounter-1])->addPoint(x, y, color);
+      ((Scribble *)shapes[shapeCounter - 1])->addPoint(x, y, color);
       Scribble *currentScribble =
           dynamic_cast<Scribble *>(shapes[shapeCounter - 1]);
       if (currentScribble) {
         currentScribble->addPoint(x, y, color);
       }
-    }
-    // else if (selectedTool == ERASER){
-    //     // ((Scribble*)shapes[shapeCounter-1])->addPoint(x, y, Color(1, 1,
-    //     1));
-
-    // }
-    else if (selectedTool == MOUSE && selectedShape != -1) {
+    } else if (selectedTool == MOUSE && selectedShape != -1) {
       if (selectedShape != -1) {
-      shapes[selectedShape]->setX(x - offsetX);
-      shapes[selectedShape]->setY(y - offsetY);
+        shapes[selectedShape]->setX(x - offsetX);
+        shapes[selectedShape]->setY(y - offsetY);
       }
     } else if (selectedTool == ERASER) {
       eraseShape(x, y);
@@ -227,7 +223,6 @@ public:
   }
 
   void clearScreen() {
-    // Reset all counters to 0;
     scribbleCounter = 0;
     sCounter = 0;
     cCounter = 0;
